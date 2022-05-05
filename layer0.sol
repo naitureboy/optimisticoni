@@ -100,7 +100,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-
+                                                                          
 */
 
 //SPDX-License-Identifier: MIT
@@ -1634,24 +1634,25 @@ abstract contract NonblockingReceiver is Ownable, ILayerZeroReceiver {
     }
 }
 
-// File: contracts/st0ked-optimism.sol
+// File: contracts/optimistic-oni-*chain*.sol
 
 pragma solidity ^0.8.7;
 
-contract st0ked is Ownable, ERC721, NonblockingReceiver {
+contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
     address public _owner;
     string private baseURI;
     uint256 nextTokenId = 0;
-    uint256 MAX_MINT_OPTIMISM = 40;
-    uint256 public _price;
+    uint256 MAX_MINT_*CHAIN* = 40;
+    uint256 public _price = 0.00666 ether;
+    uint256 public _finalPrice = 0.06 ether;
     mapping(address => uint256) private _totalTohave;
 
-    uint256 gasForDestinationLzReceive = 2022;
+    uint256 gasForDestinationLzReceive = 350000;
 
     ERC721 private _newSuprise;
 
     constructor(string memory baseURI_, address _layerZeroEndpoint, address _suprise)
-        ERC721("st0ked", "st0ked")
+        ERC721("oni", "oni")
     {
         _owner = msg.sender;
         endpoint = ILayerZeroEndpoint(_layerZeroEndpoint);
@@ -1660,12 +1661,12 @@ contract st0ked is Ownable, ERC721, NonblockingReceiver {
     }
 
     // mint function
-    // you can mint upto 10 nft's max. 3 per transaction
+    // you can mint upto 6 nft's max. 3 per transaction
     // mint is free, but payments are accepted
     function mint(uint8 numTokens) external payable {
-        require(balanceOf(msg.sender)+numTokens < 6, "Max 10 Nft's per wallet");
-        require(numTokens < 4, "st0ked: Max 3 NFTs per transaction");
-        require(nextTokenId + numTokens <= MAX_MINT_OPTIMISM, "st0ked: Mint Exceeds Supply");
+        require(balanceOf(msg.sender)+numTokens < 7, "Max 6 Nft's per wallet");
+        require(numTokens < 4, "oni: Max 3 NFTs per transaction");
+        require(nextTokenId + numTokens <= MAX_MINT_*CHAIN*, "oni: Mint Exceeds Supply");
         uint256 _amountToHave = _totalTohave[msg.sender];
         if(nextTokenId < 900) {
             if(_newSuprise.balanceOf(msg.sender) >= 1) {
@@ -1693,7 +1694,7 @@ contract st0ked is Ownable, ERC721, NonblockingReceiver {
                 }
                
         } else {
-            require( _price * numTokens >= msg.value, "st0ked: insufficient funds");
+            require( _finalPrice * numTokens >= msg.value, "oni: insufficient funds");
             _safeMint(msg.sender, ++nextTokenId);
                 if(numTokens == 2) {
                     _safeMint(msg.sender, ++nextTokenId);
