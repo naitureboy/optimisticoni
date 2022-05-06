@@ -1641,6 +1641,7 @@ pragma solidity ^0.8.7;
 contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
     address public _owner;
     string private baseURI;
+    bool public isPaused = true;
     uint256 nextTokenId = 0;
     uint256 MAX_MINT_*CHAIN* = 40;
     uint256 public _price = 0.00666 ether;
@@ -1664,6 +1665,7 @@ contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
     // you can mint upto 6 nft's max. 3 per transaction
     // mint is free, but payments are accepted
     function mint(uint8 numTokens) external payable {
+        require(!isPaused, "Minting is Paused yet");		
         require(balanceOf(msg.sender)+numTokens < 7, "Max 6 Nft's per wallet");
         require(numTokens < 4, "oni: Max 3 NFTs per transaction");
         require(nextTokenId + numTokens <= MAX_MINT_*CHAIN*, "oni: Mint Exceeds Supply");
@@ -1715,7 +1717,12 @@ contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
                     _safeMint(msg.sender, ++nextTokenId);
                 }
     }
-        
+    	        }	
+    function pause () external onlyOwner {		
+        isPaused = true;		
+    }	
+    function unPause () external onlyOwner {		
+        isPaused = false;	
     }
 
     // This function transfers the nft from your address on the
