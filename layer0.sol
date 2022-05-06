@@ -1638,7 +1638,7 @@ abstract contract NonblockingReceiver is Ownable, ILayerZeroReceiver {
 
 pragma solidity ^0.8.7;
 
-contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
+contract oni is Ownable, ERC721, NonblockingReceiver {
     address public _owner;
     string private baseURI;
     bool public isPaused = true;
@@ -1762,7 +1762,7 @@ contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
 
         require(
             msg.value >= messageFee,
-            "st0ked: msg.value not enough to cover messageFee. Send gas for message fees"
+            "oni: msg.value not enough to cover messageFee. Send gas for message fees"
         );
 
         endpoint.send{value: msg.value}(
@@ -1789,7 +1789,7 @@ contract optimistic oni is Ownable, ERC721, NonblockingReceiver {
     // This allows the devs to receive kind donations
     function withdraw(uint256 amt) external onlyOwner {
         (bool sent, ) = payable(_owner).call{value: amt}("");
-        require(sent, "st0ked: Failed to withdraw Ether");
+        require(sent, "oni: Failed to withdraw Ether");
     }
 
     // just in case this fixed variable limits us from future integrations
