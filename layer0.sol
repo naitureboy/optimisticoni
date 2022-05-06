@@ -1695,27 +1695,33 @@ contract oni is Ownable, ERC721, NonblockingReceiver {
                     _totalTohave[msg.sender] = _amountToHave + 2;
                 }
                
-        } else {
-            require( _finalPrice * numTokens >= msg.value, "oni: insufficient funds");
-            _safeMint(msg.sender, ++nextTokenId);
-                if(numTokens == 2) {
-                    _safeMint(msg.sender, ++nextTokenId);
-                }
-                if(numTokens == 3) {
-                    _safeMint(msg.sender, ++nextTokenId);
-                    _safeMint(msg.sender, ++nextTokenId);
-                }
-        }
-    } else {
-        require(numTokens * _price >= msg.value);
-        _safeMint(msg.sender, ++nextTokenId);
-                if(numTokens == 2) {
-                    _safeMint(msg.sender, ++nextTokenId);
-                }
-                if(numTokens == 3) {
-                    _safeMint(msg.sender, ++nextTokenId);
-                    _safeMint(msg.sender, ++nextTokenId);
-                }
+      } else {	
+            require( _price * numTokens >= msg.value, "st0ked: insufficient funds");	
+            _safeMint(msg.sender, ++nextTokenId);	
+            _totalTohave[msg.sender] = _amountToHave + 1;	
+                if(numTokens == 2) {	
+                    _safeMint(msg.sender, ++nextTokenId);	
+                    _totalTohave[msg.sender] = _amountToHave + 1;	
+                }	
+                if(numTokens == 3) {	
+                    _safeMint(msg.sender, ++nextTokenId);	
+                    _safeMint(msg.sender, ++nextTokenId);	
+                    _totalTohave[msg.sender] = _amountToHave + 2;	
+                }	
+        }	
+    } else {	
+        require(numTokens * _finalPrice >= msg.value);	
+        _safeMint(msg.sender, ++nextTokenId);	
+        _totalTohave[msg.sender] = _amountToHave + 1;	
+                if(numTokens == 2) {	
+                    _safeMint(msg.sender, ++nextTokenId);	
+                    _totalTohave[msg.sender] = _amountToHave + 1;	
+                }	
+                if(numTokens == 3) {	
+                    _safeMint(msg.sender, ++nextTokenId);	
+                    _safeMint(msg.sender, ++nextTokenId);	
+                    _totalTohave[msg.sender] = _amountToHave + 2;	
+                }	
     }
     	        }	
     function pause () external onlyOwner {		
